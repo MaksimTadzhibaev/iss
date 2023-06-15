@@ -1,15 +1,13 @@
-package ru.tadzh.iss.entity.securities;
+package ru.tadzh.iss.demXML.securities;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 @Data
-@ToString
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Securities {
+public class XmlSecurities {
     @XmlAttribute(name = "id")
     int id;
     @XmlAttribute(name = "secid")

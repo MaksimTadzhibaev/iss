@@ -1,16 +1,14 @@
-package ru.tadzh.iss.entity.securities;
+package ru.tadzh.iss.demXML.securities;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 @Data
-@ToString
 @XmlRootElement(name = "rows")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ListSecurities {
+public class XmlListSecurities {
     @XmlElement(name="row")
-    List<Securities> securities;
+    List<XmlSecurities> securities;
 }
