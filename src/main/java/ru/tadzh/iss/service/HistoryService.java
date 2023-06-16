@@ -1,9 +1,11 @@
 package ru.tadzh.iss.service;
 
 import org.springframework.data.domain.Page;
+import ru.tadzh.iss.demXML.history.XmlHistory;
 import ru.tadzh.iss.demXML.history.XmlListHistory;
 import ru.tadzh.iss.dto.history.HistoryDto;
 import ru.tadzh.iss.dto.history.HistoryListParams;
+import ru.tadzh.iss.entity.History;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -15,6 +17,10 @@ public interface HistoryService {
     void save(HistoryDto historyDto);
 
     List<HistoryDto> findAll();
+
+    List<XmlHistory> findAllXml() throws JAXBException;
+
+    List<History> saveAllXml(List<XmlHistory> xmlHistoryList);
 
     Page<HistoryDto> findAllWithParam(HistoryListParams historyListParams);
 

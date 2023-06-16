@@ -7,8 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.tadzh.iss.NotFoundException;
-import ru.tadzh.iss.dto.history.HistoryDto;
-import ru.tadzh.iss.dto.history.HistoryListParams;
 import ru.tadzh.iss.dto.securities.SecuritiesDto;
 import ru.tadzh.iss.dto.securities.SecuritiesListParams;
 import ru.tadzh.iss.service.SecuritiesService;

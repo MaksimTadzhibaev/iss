@@ -38,6 +38,12 @@ public class HistoryController {
         return "history";
     }
 
+    @GetMapping("/getHistoryFromXml")
+    public String listHistoryFromXml(Model model) throws JAXBException {
+        model.addAttribute("history", historyService.findAllXml());
+        return "historyFromXml";
+    }
+
     //    Создание новой Истории
 
     @GetMapping("/new")

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.tadzh.iss.demXML.history.XmlHistory;
 import ru.tadzh.iss.demXML.history.XmlListHistory;
 import ru.tadzh.iss.demXML.history.XmlDataHistory;
 import ru.tadzh.iss.demXML.history.XmlDocHistory;
@@ -86,6 +87,27 @@ public class HistoryServiceImpl implements HistoryService{
                         new SecuritiesDto(historyDto.getSecurities().getSecId(), historyDto.getSecurities().getRegNumber(), historyDto.getSecurities().getName(), historyDto.getSecurities().getEmitentTitle())))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<XmlHistory> findAllXml() throws JAXBException {
+        return getDemXmlHistory().getHistories();
+    }
+
+    @Override
+    public List<History> saveAllXml(List<XmlHistory> xmlHistoryList) {
+        List<History> historyList = new ArrayList<>();
+        for (XmlHistory xmlHistory : xmlHistoryList) {
+             historyList.add(new History(
+                     null,
+                     xmlHistory.getTradeDate(),
+                     xmlHistory.getSecId(),
+                     xmlHistory.getNumTrades(),
+                     xmlHistory.getOpen(),
+                     new Securities(xmlHistory.getSecId(), "", "", "")));
+        }
+        return historyRepository.saveAll(historyList);
+    }
+
 
     @Override
     public Page<HistoryDto> findAllWithParam(HistoryListParams historyListParams) {

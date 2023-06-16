@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:replace="fragments/navigation::navigation"></nav>
+
+<div class="container">
+    <div class="row py-2">
+<!--        <div class="col-12">-->
+<!--            <a class="btn btn-primary" th:href="@{/history/new}">Add history</a>-->
+<!--        </div>-->
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th scope="col">tradeDate</th>
+                    <th scope="col">secId</th>
+                    <th scope="col">numTrades</th>
+                    <th scope="col">open</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${!history.isEmpty()}" th:each="his : ${history}">
+                    <td th:text="${his.tradeDate}">Invasion</td>
+                    <td th:text="${his.secId}">Opera</td>
+                    <td th:text="${his.numTrades}">Opera</td>
+                    <td th:text="${his.open}">Max</td>
+<!--                    <td>-->
+<!--                        <a class="btn btn-success" th:href="@{/history/{id}(id = ${his.id})}">-->
+<!--                            <i class="fas fa-edit"></i></a>-->
+<!--                        <form class="d-inline" th:method="delete" th:action="@{/history/{id} (id = ${his.id})}">-->
+<!--                            <button type="submit" class="btn btn-danger">-->
+<!--                                <i class="far fa-trash-alt"></i>-->
+<!--                            </button>-->
+<!--                        </form>-->
+<!--                    </td>-->
+                </tr>
+                <tr th:if="${history.isEmpty()}">
+                    <td colspan="4"> No history data</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+<!--        <div th:if="${history.hasContent()}" class="col-12">-->
+<!--            <nav aria-label="Page navigation example">-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item"-->
+<!--                        th:classappend="${history.isFirst()} ? 'disabled'">-->
+<!--                        <a th:replace="fragments/pagination::pagination_history('&laquo;', ${history.number})"></a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"-->
+<!--                        th:each="num: ${#numbers.sequence(1, history.totalPages)}"-->
+<!--                        th:classappend="${num == history.number + 1} ? 'active'">-->
+<!--                        <a th:text="${num}"-->
+<!--                           th:replace="fragments/pagination::pagination_history(${num}, ${num})"></a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"-->
+<!--                        th:classappend="${history.isLast()} ? 'disabled'">-->
+<!--                        <a th:replace="fragments/pagination::pagination_history('&raquo;', ${history.number+2})"></a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<th:block th:replace="fragments/scripts::scripts"></th:block>
+
+</body>
+</html>
