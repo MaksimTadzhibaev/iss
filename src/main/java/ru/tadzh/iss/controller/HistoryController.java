@@ -2,22 +2,27 @@ package ru.tadzh.iss.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.tadzh.iss.dto.history.HistoryDto;
 import ru.tadzh.iss.dto.history.HistoryListParams;
+import ru.tadzh.iss.dto.securities.SecuritiesDto;
 import ru.tadzh.iss.service.HistoryService;
 import ru.tadzh.iss.service.SecuritiesService;
 
 import javax.xml.bind.JAXBException;
 import ru.tadzh.iss.NotFoundException;
 
-@RestController
+import java.util.List;
+
+@Controller
 @RequestMapping("/history")
 public class HistoryController {
     @Autowired
     HistoryService historyService;
+    @Autowired
     SecuritiesService securitiesService;
 
     @GetMapping(value = "/getHistoryFromIss")
@@ -27,9 +32,9 @@ public class HistoryController {
 
     //    Отображение страницы содержащей Историю
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String listPageHistory(Model model, HistoryListParams historyListParams) {
-        model.addAttribute("history", historyService.findAll());
+        model.addAttribute("history", historyService.findAllWithParam(historyListParams));
         return "history";
     }
 
@@ -54,16 +59,28 @@ public class HistoryController {
     //    Сохранение новой или сохранение изменений в Истории
 
     @PostMapping
-    public String updateHistory(@Valid @ModelAttribute("history") HistoryDto historyDto, BindingResult result, Model model) {
-        if (result.hasErrors()) {;
-            model.addAttribute("securities", securitiesService.findAll());
+    public String updateHistory(@Valid @ModelAttribute("history") HistoryDto history, BindingResult result, Model model) {
+        List<SecuritiesDto> allList = securitiesService.findAll();
+        if (history.getSecuritiesDto()==null){
+            for (SecuritiesDto sec : allList) {
+                if (sec.getSecId().equals(history.getSecId())){
+                    history.setSecuritiesDto(sec);
+                    break;
+                }
+                else
+                    model.addAttribute("securities", allList);
+                    return "history_form";
+            }
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("securities", allList);
             return "history_form";
         }
-        historyService.save(historyDto);
+        historyService.save(history);
         return "redirect:/history";
     }
 
-    //    Удаление Истории
+    //  Удаление Истории
 
     @DeleteMapping("/{id}")
     public String deleteHistory(@PathVariable("id") Long id) {

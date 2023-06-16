@@ -22,16 +22,17 @@
                     <th scope="col">numTrades</th>
                     <th scope="col">open</th>
                     <th scope="col">securitiesName</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${history.hasContent()}" th:each="his : ${history.content}">
+                <tr th:if="${history.hasContent()}" th:each="his : ${history}">
                     <th scope="row" th:text="${his.id}">1</th>
                     <td th:text="${his.tradeDate}">Invasion</td>
-                    <td th:text="${his.secId}">2003</td>
-                    <td th:text="${his.numTrades}">128371293</td>
+                    <td th:text="${his.secId}">Opera</td>
+                    <td th:text="${his.numTrades}">Opera</td>
                     <td th:text="${his.open}">Max</td>
-                    <td th:text="${his.securitiesDto.name}">Opera</td>
+                    <td th:text="${his.securitiesDto.secId}">Opera</td>
                     <td>
                         <a class="btn btn-success" th:href="@{/history/{id}(id = ${his.id})}">
                             <i class="fas fa-edit"></i></a>
@@ -43,7 +44,7 @@
                     </td>
                 </tr>
                 <tr th:unless="${history.hasContent()}">
-                    <td colspan="4"> No history data</td>
+                    <td colspan="7"> No history data</td>
                 </tr>
                 </tbody>
             </table>

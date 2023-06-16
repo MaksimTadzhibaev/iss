@@ -1,11 +1,15 @@
 package ru.tadzh.iss.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.tadzh.iss.demXML.securities.XmlListSecurities;
 import ru.tadzh.iss.demXML.securities.XmlDocSecurities;
 import ru.tadzh.iss.dto.securities.SecuritiesDto;
+import ru.tadzh.iss.dto.securities.SecuritiesListParams;
 import ru.tadzh.iss.entity.Securities;
 import ru.tadzh.iss.repository.SecuritiesRepository;
 
@@ -23,6 +27,7 @@ public class SecuritiesServiceImpl implements SecuritiesService{
 
     private final SecuritiesRepository securitiesRepository;
 
+    @Autowired
     public SecuritiesServiceImpl(RestTemplateBuilder restTemplateBuilder, SecuritiesRepository securitiesRepository) {
         this.restTemplate = restTemplateBuilder.build();
         this.securitiesRepository = securitiesRepository;
@@ -52,15 +57,27 @@ public class SecuritiesServiceImpl implements SecuritiesService{
     @Override
     public List<SecuritiesDto> findAll() {
         return securitiesRepository.findAll().stream()
-                .map(securitiesDto -> new SecuritiesDto(securitiesDto.getSecId(),
-                        securitiesDto.getRegNumber(),
-                        securitiesDto.getName(),
-                        securitiesDto.getEmitentTitle()))
+                .map(securities -> new SecuritiesDto(securities.getSecId(),
+                        securities.getRegNumber(),
+                        securities.getName(),
+                        securities.getEmitentTitle()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<SecuritiesDto> findById(Long id) {
+    public Page<SecuritiesDto> findAllWithParam(SecuritiesListParams securitiesListParams) {
+        return securitiesRepository.findAll(
+                PageRequest.of(
+                        Optional.ofNullable(securitiesListParams.getPage()).orElse(1) - 1,
+                        Optional.ofNullable(securitiesListParams.getSize()).orElse(3))).map(securities -> new SecuritiesDto(
+                securities.getSecId(),
+                securities.getRegNumber(),
+                securities.getName(),
+                securities.getEmitentTitle()));
+    }
+
+    @Override
+    public Optional<SecuritiesDto> findById(String id) {
         return securitiesRepository.findById(id)
                 .map(securities -> new SecuritiesDto(
                         securities.getSecId(),
@@ -70,7 +87,7 @@ public class SecuritiesServiceImpl implements SecuritiesService{
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         securitiesRepository.deleteById(id);
     }
 }

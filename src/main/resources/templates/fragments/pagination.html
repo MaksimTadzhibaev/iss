@@ -5,4 +5,9 @@
    th:href="@{/history(page=${numPage},
             size=${history.size})}">[[${nameBtn}]]
 </a>
+
+<a th:fragment="pagination_securities(nameBtn, numPage)" class="page-link"
+   th:href="@{/securities(page=${numPage},
+            size=${securities.size})}">[[${nameBtn}]]
+</a>
 </html>

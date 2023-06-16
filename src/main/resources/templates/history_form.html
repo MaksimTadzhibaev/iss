@@ -13,32 +13,32 @@
             <form th:action="@{/history}" method="post" th:object="${history}">
                 <input type="hidden" id="id" th:field="*{id}">
                 <div class="form-group">
-                    <label>Book title</label>
+                    <label>History tradeDate</label>
                     <input type="text" class="form-control" id="tradeDate" th:field="*{tradeDate}"
-                           placeholder="Enter book title">
+                           placeholder="Enter tradeDate">
                 </div>
                 <div class="form-group">
-                    <label>Book publication date</label>
+                    <label>History secId</label>
                     <input type="text" class="form-control" id="secId" th:field="*{secId}"
-                           placeholder="Enter publication date">
+                           placeholder="Enter secId">
                 </div>
                 <div class="form-group">
-                    <label>Book isbn</label>
+                    <label>History numTrades</label>
                     <input type="text" class="form-control" id="numTrades" th:field="*{numTrades}"
-                           placeholder="Enter isbn">
+                           placeholder="Enter numTrades">
                 </div>
                 <div class="form-group">
-                    <label>Book isbn</label>
+                    <label>History open</label>
                     <input type="text" class="form-control" id="open" th:field="*{open}"
-                           placeholder="Enter isbn">
+                           placeholder="Enter open">
                 </div>
                 <div class="form-group">
-                    <label for="genres">Genre</label>
-                    <select class="form-control" id="securities" name="securities" required>
-                        <option th:each="securities : ${securities}"
-                                th:text="${securities.name}"
-                                th:value="${securities.secId}"
-                                th:selected="${history.securitiesDto?.secId == securities.secId}"></option>
+                    <label for="securities">Securities</label>
+                    <select class="form-control" id="securities" name="sec" required>
+                        <option th:each="sec : ${securities}"
+                                th:text="${sec.secId}"
+                                th:value="${sec}"
+                                th:selected="${history.securitiesDto?.secId == sec.secId}"></option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

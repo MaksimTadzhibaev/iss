@@ -1,7 +1,11 @@
 package ru.tadzh.iss.service;
 
+import org.springframework.data.domain.Page;
 import ru.tadzh.iss.demXML.securities.XmlListSecurities;
+import ru.tadzh.iss.dto.history.HistoryDto;
 import ru.tadzh.iss.dto.securities.SecuritiesDto;
+import ru.tadzh.iss.dto.securities.SecuritiesListParams;
+import ru.tadzh.iss.entity.History;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -15,7 +19,9 @@ public interface SecuritiesService {
 
     List<SecuritiesDto> findAll();
 
-    Optional<SecuritiesDto> findById(Long id);
+    Page<SecuritiesDto> findAllWithParam(SecuritiesListParams securitiesListParams);
 
-    void deleteById(Long id);
+    Optional<SecuritiesDto> findById(String id);
+
+    void deleteById(String id);
 }
