@@ -39,19 +39,6 @@ public class HistoryAndSecuritiesServiceImpl implements HistoryAndSecuritiesServ
     }
 
     @Override
-    public void saveHistory(HistoryDto historyDto) {
-        SecuritiesDto securitiesDto = historyDto.getSecuritiesDto();
-        History history = new History(
-                historyDto.getId(),
-                historyDto.getTradeDate(),
-                historyDto.getSecId(),
-                historyDto.getNumTrades(),
-                historyDto.getOpen(),
-                new Securities(securitiesDto.getSecId(), securitiesDto.getRegNumber(), securitiesDto.getName(), securitiesDto.getEmitentTitle()));
-        historyRepository.save(history);
-    }
-
-    @Override
     public List<HistoryDto> findAllHistory() {
         return historyRepository.findAll().stream()
                 .map(historyDto -> new HistoryDto(
@@ -64,7 +51,15 @@ public class HistoryAndSecuritiesServiceImpl implements HistoryAndSecuritiesServ
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<SecuritiesDto> findAllSecurities() {
+        return securitiesRepository.findAll().stream()
+                .map(securities -> new SecuritiesDto(securities.getSecId(),
+                        securities.getRegNumber(),
+                        securities.getName(),
+                        securities.getEmitentTitle()))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public Optional<HistoryDto> findByIdHistory(Long id) {
@@ -79,27 +74,6 @@ public class HistoryAndSecuritiesServiceImpl implements HistoryAndSecuritiesServ
     }
 
     @Override
-    public void deleteByIdHistory(Long id) {
-        historyRepository.deleteById(id);
-    }
-
-    @Override
-    public void saveSecurities(SecuritiesDto securitiesDto) {
-        Securities securities = new Securities(securitiesDto.getSecId(), securitiesDto.getRegNumber(), securitiesDto.getName(), securitiesDto.getEmitentTitle());
-        securitiesRepository.save(securities);
-    }
-
-    @Override
-    public List<SecuritiesDto> findAllSecurities() {
-        return securitiesRepository.findAll().stream()
-                .map(securities -> new SecuritiesDto(securities.getSecId(),
-                        securities.getRegNumber(),
-                        securities.getName(),
-                        securities.getEmitentTitle()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Optional<SecuritiesDto> findByIdSecurities(String id) {
         return securitiesRepository.findById(id)
                 .map(securities -> new SecuritiesDto(
@@ -110,7 +84,37 @@ public class HistoryAndSecuritiesServiceImpl implements HistoryAndSecuritiesServ
     }
 
     @Override
+    public void saveHistory(HistoryDto historyDto) {
+        SecuritiesDto securitiesDto = historyDto.getSecuritiesDto();
+        History history = new History(
+                historyDto.getId(),
+                historyDto.getTradeDate(),
+                historyDto.getSecId(),
+                historyDto.getNumTrades(),
+                historyDto.getOpen(),
+                new Securities(securitiesDto.getSecId(), securitiesDto.getRegNumber(), securitiesDto.getName(), securitiesDto.getEmitentTitle()));
+        historyRepository.save(history);
+    }
+
+    @Override
+    public void saveSecurities(SecuritiesDto securitiesDto) {
+        Securities securities = new Securities(securitiesDto.getSecId(), securitiesDto.getRegNumber(), securitiesDto.getName(), securitiesDto.getEmitentTitle());
+        securitiesRepository.save(securities);
+    }
+
+    @Override
+    public void deleteByIdHistory(Long id) {
+        historyRepository.deleteById(id);
+    }
+
+    @Override
     public void deleteByIdSecurities(String id) {
+        List <History> historyDtoList = historyRepository.findAll();
+        for (History history: historyDtoList) {
+            if (history.getSecId().equals(id)){
+                historyRepository.deleteById(history.getId());
+            }
+        }
         securitiesRepository.deleteById(id);
     }
 }

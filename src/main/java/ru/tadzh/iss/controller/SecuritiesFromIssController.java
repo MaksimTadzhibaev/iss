@@ -15,17 +15,14 @@ public class SecuritiesFromIssController {
     @Autowired
     SecuritiesService securitiesService;
 
-    @GetMapping(value = "/getSecuritiesFromIss")
-    public void getSecurities() throws JAXBException {
-        System.out.println(securitiesService.getDemXmlSecurities());
-    }
-
+    // Отображение информации из ISS по бумаге за определенную дату
     @GetMapping()
     public String listSecuritiesFromXml(Model model) throws JAXBException {
         model.addAttribute("securities", securitiesService.findAllXmlSecurities());
         return "securitiesFromIss";
     }
 
+    // Сохранение информации из ISS в БД по бумаге за определенную дату
     @GetMapping("/saveSecuritiesFromIss")
     public String saveListSecuritiesFromXml() throws JAXBException {
         securitiesService.saveAllXmlSecurities();

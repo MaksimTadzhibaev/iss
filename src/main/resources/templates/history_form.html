@@ -32,15 +32,6 @@
                     <input type="text" class="form-control" id="open" th:field="*{open}"
                            placeholder="Enter open">
                 </div>
-                <div class="form-group">
-                    <label for="securities">Securities</label>
-                    <select class="form-control" id="securities" name="sec" required>
-                        <option th:each="sec : ${securities}"
-                                th:text="${sec.secId}"
-                                th:value="${sec}"
-                                th:selected="${history.securitiesDto?.secId == sec.secId}"></option>
-                    </select>
-                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

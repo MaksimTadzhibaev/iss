@@ -20,7 +20,6 @@ import java.util.List;
 @Service
 public class SecuritiesServiceImpl implements SecuritiesService{
     private final RestTemplate restTemplate;
-
     private final SecuritiesRepository securitiesRepository;
 
     @Autowired

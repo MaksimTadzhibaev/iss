@@ -9,18 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistoryAndSecuritiesService {
-
-    void saveHistory(HistoryDto historyDto);
-    List<HistoryDto> findAllHistory();
     Page<HistoryDto> findAllHistoryAndSecuritiesWithParam(HistoryAndSecuritiesListParams historyAndSecuritiesListParams);
-    Optional<HistoryDto> findByIdHistory(Long id);
-    void deleteByIdHistory(Long id);
-
-    void saveSecurities(SecuritiesDto securitiesDto);
-
+    List<HistoryDto> findAllHistory();
     List<SecuritiesDto> findAllSecurities();
-
+    Optional<HistoryDto> findByIdHistory(Long id);
     Optional<SecuritiesDto> findByIdSecurities(String id);
-
+    void saveHistory(HistoryDto historyDto);
+    void saveSecurities(SecuritiesDto securitiesDto);
+    void deleteByIdHistory(Long id);
     void deleteByIdSecurities(String id);
 }

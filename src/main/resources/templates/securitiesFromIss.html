@@ -28,15 +28,6 @@
                     <td th:text="${sec.regNumber}">Opera</td>
                     <td th:text="${sec.name}">Opera</td>
                     <td th:text="${sec.emitentTitle}">Max</td>
-<!--                    <td>-->
-<!--                        <a class="btn btn-success" th:href="@{/history/{id}(id = ${his.id})}">-->
-<!--                            <i class="fas fa-edit"></i></a>-->
-<!--                        <form class="d-inline" th:method="delete" th:action="@{/history/{id} (id = ${his.id})}">-->
-<!--                            <button type="submit" class="btn btn-danger">-->
-<!--                                <i class="far fa-trash-alt"></i>-->
-<!--                            </button>-->
-<!--                        </form>-->
-<!--                    </td>-->
                 </tr>
                 <tr th:if="${securities.isEmpty()}">
                     <td colspan="4"> No securities data</td>
@@ -44,26 +35,6 @@
                 </tbody>
             </table>
         </div>
-<!--        <div th:if="${history.hasContent()}" class="col-12">-->
-<!--            <nav aria-label="Page navigation example">-->
-<!--                <ul class="pagination">-->
-<!--                    <li class="page-item"-->
-<!--                        th:classappend="${history.isFirst()} ? 'disabled'">-->
-<!--                        <a th:replace="fragments/pagination::pagination_history('&laquo;', ${history.number})"></a>-->
-<!--                    </li>-->
-<!--                    <li class="page-item"-->
-<!--                        th:each="num: ${#numbers.sequence(1, history.totalPages)}"-->
-<!--                        th:classappend="${num == history.number + 1} ? 'active'">-->
-<!--                        <a th:text="${num}"-->
-<!--                           th:replace="fragments/pagination::pagination_history(${num}, ${num})"></a>-->
-<!--                    </li>-->
-<!--                    <li class="page-item"-->
-<!--                        th:classappend="${history.isLast()} ? 'disabled'">-->
-<!--                        <a th:replace="fragments/pagination::pagination_history('&raquo;', ${history.number+2})"></a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
-<!--        </div>-->
     </div>
 </div>
 
