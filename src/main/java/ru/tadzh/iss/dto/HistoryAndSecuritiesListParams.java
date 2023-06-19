@@ -1,9 +1,9 @@
-package ru.tadzh.iss.dto.history;
+package ru.tadzh.iss.dto;
 
 import lombok.Data;
 
 @Data
-public class HistoryListParams {
+public class HistoryAndSecuritiesListParams {
     private Integer page;
     private Integer size;
 }

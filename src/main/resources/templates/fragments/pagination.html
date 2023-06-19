@@ -2,12 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <a th:fragment="pagination_history(nameBtn, numPage)" class="page-link"
-   th:href="@{/history(page=${numPage},
-            size=${history.size})}">[[${nameBtn}]]
+   th:href="@{/historyAndSecurities(page=${numPage},
+            size=${historyAndSecurities.size})}">[[${nameBtn}]]
 </a>
 
-<a th:fragment="pagination_securities(nameBtn, numPage)" class="page-link"
-   th:href="@{/securities(page=${numPage},
-            size=${securities.size})}">[[${nameBtn}]]
-</a>
 </html>

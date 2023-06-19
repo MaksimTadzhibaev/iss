@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/history}" method="post" th:object="${history}">
+            <form th:action="@{/historyAndSecurities/historyUpdate}" method="post" th:object="${history}">
                 <input type="hidden" id="id" th:field="*{id}">
                 <div class="form-group">
                     <label>History tradeDate</label>

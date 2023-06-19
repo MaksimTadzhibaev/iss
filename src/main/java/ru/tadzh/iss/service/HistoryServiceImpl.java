@@ -2,20 +2,16 @@ package ru.tadzh.iss.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.tadzh.iss.demXML.history.XmlHistory;
 import ru.tadzh.iss.demXML.history.XmlListHistory;
 import ru.tadzh.iss.demXML.history.XmlDataHistory;
 import ru.tadzh.iss.demXML.history.XmlDocHistory;
-import ru.tadzh.iss.dto.history.HistoryDto;
-import ru.tadzh.iss.dto.history.HistoryListParams;
-import ru.tadzh.iss.dto.securities.SecuritiesDto;
 import ru.tadzh.iss.entity.History;
 import ru.tadzh.iss.entity.Securities;
 import ru.tadzh.iss.repository.HistoryRepository;
+import ru.tadzh.iss.repository.SecuritiesRepository;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,7 +19,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,12 +27,15 @@ public class HistoryServiceImpl implements HistoryService{
 
     private final RestTemplate restTemplate;
     private final HistoryRepository historyRepository;
+    private final SecuritiesRepository securitiesRepository;
 
     @Autowired
     public HistoryServiceImpl(RestTemplateBuilder restTemplateBuilder,
-                              HistoryRepository historyRepository) {
+                              HistoryRepository historyRepository,
+                              SecuritiesRepository securitiesRepository) {
         this.restTemplate = restTemplateBuilder.build();
         this.historyRepository = historyRepository;
+        this.securitiesRepository = securitiesRepository;
     }
 
     /**
@@ -45,7 +44,8 @@ public class HistoryServiceImpl implements HistoryService{
      * @throws JAXBException
      */
     public XmlListHistory getDemXmlHistory() throws JAXBException {
-        String url = "http://iss.moex.com/iss/history/engines/stock/markets/shares/boards/tqbr/securities.xml?date=2013-12-20";
+//        String url = "http://iss.moex.com/iss/history/engines/stock/markets/shares/boards/tqbr/securities.xml?date=2013-12-20";
+        String url = "http://iss.moex.com/iss/history/engines/stock/markets/shares/securities.xml";
         String body = restTemplate.getForObject(url, String.class);
         StringReader reader = new StringReader(body);
         JAXBContext context = JAXBContext.newInstance(XmlDocHistory.class);
@@ -63,81 +63,29 @@ public class HistoryServiceImpl implements HistoryService{
     }
 
     @Override
-    public void save(HistoryDto historyDto) {
-        SecuritiesDto securitiesDto = historyDto.getSecuritiesDto();
-        History history = new History(
-                historyDto.getId(),
-                historyDto.getTradeDate(),
-                historyDto.getSecId(),
-                historyDto.getNumTrades(),
-                historyDto.getOpen(),
-                new Securities(securitiesDto.getSecId(), securitiesDto.getRegNumber(), securitiesDto.getName(), securitiesDto.getEmitentTitle()));
-        historyRepository.save(history);
-    }
-
-    @Override
-    public List<HistoryDto> findAll() {
-        return historyRepository.findAll().stream()
-                .map(historyDto -> new HistoryDto(
-                        historyDto.getId(),
-                        historyDto.getTradeDate(),
-                        historyDto.getSecId(),
-                        historyDto.getNumTrades(),
-                        historyDto.getOpen(),
-                        new SecuritiesDto(historyDto.getSecurities().getSecId(), historyDto.getSecurities().getRegNumber(), historyDto.getSecurities().getName(), historyDto.getSecurities().getEmitentTitle())))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<XmlHistory> findAllXml() throws JAXBException {
+    public List<XmlHistory> findAllXmlHistory() throws JAXBException {
         return getDemXmlHistory().getHistories();
     }
 
     @Override
-    public List<History> saveAllXml(List<XmlHistory> xmlHistoryList) {
+    public List<History> saveAllXmlHistory() throws JAXBException {
+        List<XmlHistory>  listXmlHistory = getDemXmlHistory().getHistories();
         List<History> historyList = new ArrayList<>();
-        for (XmlHistory xmlHistory : xmlHistoryList) {
+        Map<String, Securities> securitiesMap =
+                securitiesRepository.findAll().stream().collect(Collectors.toMap(Securities::getSecId, securities -> securities));
+        System.out.println(securitiesMap);
+        System.out.println(historyList);
+        for (XmlHistory xmlHistory : listXmlHistory) {
+            if (securitiesMap.get(xmlHistory.getSecId()) != null) {
              historyList.add(new History(
                      null,
                      xmlHistory.getTradeDate(),
                      xmlHistory.getSecId(),
                      xmlHistory.getNumTrades(),
                      xmlHistory.getOpen(),
-                     new Securities(xmlHistory.getSecId(), "", "", "")));
+                     securitiesMap.get(xmlHistory.getSecId())));
+            }
         }
         return historyRepository.saveAll(historyList);
-    }
-
-
-    @Override
-    public Page<HistoryDto> findAllWithParam(HistoryListParams historyListParams) {
-        return historyRepository.findAll(
-                PageRequest.of(
-                        Optional.ofNullable(historyListParams.getPage()).orElse(1) - 1,
-                        Optional.ofNullable(historyListParams.getSize()).orElse(3))).map(history -> new HistoryDto(
-                history.getId(),
-                history.getTradeDate(),
-                history.getSecId(),
-                history.getNumTrades(),
-                history.getOpen(),
-                new SecuritiesDto(history.getSecurities().getSecId(), history.getSecurities().getRegNumber(), history.getSecurities().getName(), history.getSecurities().getEmitentTitle())));
-    }
-
-
-    @Override
-    public Optional<HistoryDto> findById(Long id) {
-        return historyRepository.findById(id)
-                .map(history -> new HistoryDto(
-                        history.getId(),
-                        history.getTradeDate(),
-                        history.getSecId(),
-                        history.getNumTrades(),
-                        history.getOpen(),
-                        new SecuritiesDto(history.getSecurities().getSecId(), history.getSecurities().getRegNumber(), history.getSecurities().getName(), history.getSecurities().getEmitentTitle())));
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        historyRepository.deleteById(id);
     }
 }

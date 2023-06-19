@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navigation">
-  <a class="navbar-brand" th:href="@{/history}">ISS</a>
+  <a class="navbar-brand" th:href="@{/historyAndSecurities}">ISS</a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,13 +12,13 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/history/getHistoryFromXml}">History from ISS</a>
+        <a class="nav-link" th:href="@{/historyAndSecurities}">History and securities</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/history}">History</a>
+        <a class="nav-link" th:href="@{/historyFromIss}">History from ISS</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/securities}">Securities</a>
+        <a class="nav-link" th:href="@{/securitiesFromIss}">Securities from ISS</a>
       </li>
     </ul>
   </div>

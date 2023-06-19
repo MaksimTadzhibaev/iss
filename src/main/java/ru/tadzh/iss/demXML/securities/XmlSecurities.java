@@ -8,8 +8,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class XmlSecurities {
-    @XmlAttribute(name = "id")
-    int id;
     @XmlAttribute(name = "secid")
     String secId;
     @XmlAttribute(name = "regnumber")
