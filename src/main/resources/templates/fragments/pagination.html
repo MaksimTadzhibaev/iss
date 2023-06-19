@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<a th:fragment="pagination_history(nameBtn, numPage)" class="page-link"
+   th:href="@{/historyAndSecurities(page=${numPage},
+            size=${historyAndSecurities.size})}">[[${nameBtn}]]
+</a>
+
+</html>

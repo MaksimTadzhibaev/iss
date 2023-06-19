@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:replace="fragments/navigation::navigation"></nav>
+
+<div class="container">
+  <div class="row py-2">
+    <div class="col-12">
+      <form th:action="@{/historyAndSecurities/securitiesUpdate}" method="post" th:object="${securities}">
+        <div class="form-group">
+          <label>Securities secId</label>
+          <input type="text" class="form-control" id="secId" th:field="*{secId}"
+                 placeholder="Enter securities secId">
+        </div>
+        <div class="form-group">
+          <label>Securities regNumber</label>
+          <input type="text" class="form-control" id="regNumber" th:field="*{regNumber}"
+                 placeholder="Enter securities regNumber">
+        </div>
+        <div class="form-group">
+          <label>Securities name</label>
+          <input type="text" class="form-control" id="name" th:field="*{name}"
+                 placeholder="Enter securities regNumber">
+        </div>
+        <div class="form-group">
+          <label>Securities emitentTitle</label>
+          <input type="text" class="form-control" id="emitentTitle" th:field="*{emitentTitle}"
+                 placeholder="Enter securities emitentTitle">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<th:block th:replace="fragments/scripts::scripts"></th:block>
+
+</body>
+
+</html>

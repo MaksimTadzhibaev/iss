@@ -1,30 +1,18 @@
 package ru.tadzh.iss.service;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import ru.tadzh.iss.entity.securities.XmlDocSecurities;
+import ru.tadzh.iss.demXML.securities.XmlListSecurities;
+import ru.tadzh.iss.demXML.securities.XmlSecurities;
+import ru.tadzh.iss.entity.Securities;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
+import java.util.List;
 
-@Service
-public class SecuritiesService {
-    private final RestTemplate restTemplate;
+public interface SecuritiesService {
 
-    public SecuritiesService(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
-    }
+    XmlListSecurities getDemXmlSecurities() throws JAXBException;
+    List<XmlSecurities> findAllXmlSecurities() throws JAXBException;
+    List<Securities> saveAllXmlSecurities() throws JAXBException;
 
-    public XmlDocSecurities getSecurities() throws JAXBException {
-        String url = "http://iss.moex.com/iss/securities.xml";
-        String body = restTemplate.getForObject(url, String.class);
-        StringReader reader = new StringReader(body);
-        JAXBContext context = JAXBContext.newInstance(XmlDocSecurities.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        XmlDocSecurities doc = (XmlDocSecurities) unmarshaller.unmarshal(reader);
-        return doc;
-    }
+
+
 }

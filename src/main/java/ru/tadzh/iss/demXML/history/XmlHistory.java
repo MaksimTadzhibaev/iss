@@ -1,17 +1,18 @@
-package ru.tadzh.iss.entity.history;
+package ru.tadzh.iss.demXML.history;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import java.util.Date;
 
 @Data
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
-public class History {
+public class XmlHistory {
     @XmlAttribute(name = "TRADEDATE")//дата
     String tradeDate;
     @XmlAttribute(name = "SECID")
@@ -20,5 +21,4 @@ public class History {
     String numTrades;
     @XmlAttribute(name = "OPEN")
     String open;
-
 }
